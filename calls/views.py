@@ -5,19 +5,19 @@ from twilio.twiml.voice_response import VoiceResponse,Dial
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import AllowAny
 import traceback
+from twilo import settings
 
 
 
 # Twilio Credentials
-import os
-from dotenv import load_dotenv
-load_dotenv()
+# import os
+# from dotenv import load_dotenv
+# load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
-# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-# TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
-# def index(request):
-#     return render(request, "calls/index.html")
+
+
+def index(request):
+    return render(request, "calls/index.html")
 
 @api_view(['POST'])
 @permission_classes([AllowAny,])
@@ -31,6 +31,17 @@ def make_call(request):
 
             if not phone_number.startswith("+"):
                 return JsonResponse({"error": "Phone number must be in international format (e.g., +1234567890)"}, status=400)
+            
+            # TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+            # print("TWILIO_ACCOUNT_SID",TWILIO_ACCOUNT_SID)
+            # TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+            # TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
+
+            TWILIO_ACCOUNT_SID = settings.TWILIO_ACCOUNT_SID
+            print("TWILIO_ACCOUNT_SID",TWILIO_ACCOUNT_SID)
+            TWILIO_AUTH_TOKEN = settings.TWILIO_AUTH_TOKEN
+            TWILIO_PHONE_NUMBER = settings.TWILIO_PHONE_NUMBER
+
             print(phone_number)
             try:
                 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
@@ -65,7 +76,7 @@ def send_sms(request):
                 return JsonResponse({"error": "Phone number must be in international format (e.g., +1234567890)"}, status=400)
 
             try:
-                client = Client(ACCOUNT_SID, AUTH_TOKEN)
+                client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
                 message = client.messages.create(
                     to=phone_number,
                     from_=TWILIO_PHONE_NUMBER,
@@ -76,8 +87,15 @@ def send_sms(request):
 
             except Exception as e:
                 traceback.print_exc()
+                traceback.print_exc()
                 return JsonResponse({"error": str(e)}, status=400)
     except:
         traceback.print_exc()
         return JsonResponse({"error": "Invalid request"}, status=400)
+    
 
+@api_view(['POST'])
+@permission_classes([AllowAny,])
+def health_call(request):
+    print("hello")
+    return JsonResponse({"message": "SMS sent successfully!", "message_sid": "um"})

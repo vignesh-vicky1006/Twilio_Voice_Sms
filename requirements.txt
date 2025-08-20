@@ -1,0 +1,4 @@
+django==3.0.4
+djangorestframework==3.12.4
+twilio==8.2.0
+python-dotenv==1.0.0

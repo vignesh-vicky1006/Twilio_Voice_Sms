@@ -11,10 +11,34 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIRs = Path(__file__).resolve().parent.parent
+
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Set settings values from environment variables or env.json file
+import os
+import json
+from pathlib import Path
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load from env.json if present
+if os.path.isfile(os.path.join(BASE_DIR, "env.json")):
+    with open(os.path.join(BASE_DIR, "env.json")) as f:
+        data = json.load(f)
+
+        TWILIO_ACCOUNT_SID = data["TWILIO_ACCOUNT_SID"]
+        TWILIO_AUTH_TOKEN = data["TWILIO_AUTH_TOKEN"]
+        TWILIO_PHONE_NUMBER = data["TWILIO_PHONE_NUMBER"]
+else:
+    # fallback to environment variables
+    TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+    TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+    TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -25,7 +49,7 @@ SECRET_KEY = 'django-insecure-j0o0(i(5i$)bxw54cqb8uzwz0(7ssxhr)rr=*^*qwhwki&p1xi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,7 +101,7 @@ WSGI_APPLICATION = 'twilo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIRs / 'db.sqlite3'),
     }
 }
 
