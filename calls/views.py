@@ -13,7 +13,10 @@ from twilo import settings
 # import os
 # from dotenv import load_dotenv
 # load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
-
+TWILIO_ACCOUNT_SID = settings.TWILIO_ACCOUNT_SID
+print("TWILIO_ACCOUNT_SID",TWILIO_ACCOUNT_SID)
+TWILIO_AUTH_TOKEN = settings.TWILIO_AUTH_TOKEN
+TWILIO_PHONE_NUMBER = settings.TWILIO_PHONE_NUMBER
 
 
 def index(request):
@@ -37,10 +40,10 @@ def make_call(request):
             # TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
             # TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
 
-            TWILIO_ACCOUNT_SID = settings.TWILIO_ACCOUNT_SID
-            print("TWILIO_ACCOUNT_SID",TWILIO_ACCOUNT_SID)
-            TWILIO_AUTH_TOKEN = settings.TWILIO_AUTH_TOKEN
-            TWILIO_PHONE_NUMBER = settings.TWILIO_PHONE_NUMBER
+            # TWILIO_ACCOUNT_SID = settings.TWILIO_ACCOUNT_SID
+            # print("TWILIO_ACCOUNT_SID",TWILIO_ACCOUNT_SID)
+            # TWILIO_AUTH_TOKEN = settings.TWILIO_AUTH_TOKEN
+            # TWILIO_PHONE_NUMBER = settings.TWILIO_PHONE_NUMBER
 
             print(phone_number)
             try:
